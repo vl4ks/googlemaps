@@ -1,6 +1,7 @@
 package com.denisova.googlemaps
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -14,11 +15,14 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var mMap: GoogleMap
+    lateinit var imageloc:ImageView
+    private var isoffed = false;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+        imageloc = findViewById(R.id.imageloc)
 
         var mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -37,5 +41,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.isBuildingsEnabled = true
         mMap.isIndoorEnabled = true
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point))
+        var trafficonoff:ImageView = findViewById(R.id.trafficonoff)
+        trafficonoff.setOnClickListener{
+            if(!isoffed){
+                mMap.isTrafficEnabled = true;
+                trafficonoff.setImageResource(R.drawable.trafficon)
+                isoffed = true
+            }
+            else {
+                mMap.isTrafficEnabled = false;
+                trafficonoff.setImageResource(R.drawable.trafficoff)
+                isoffed = false
+            }
+        }
+        //imageloc
     }
 }
